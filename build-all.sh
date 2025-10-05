@@ -4,6 +4,7 @@ source ./_build_stages.sh
 
 
 echo "Building ${PROGRAM_VERSION}"
+export PROGRAM_VERSION
 
 create_venv
 set_version

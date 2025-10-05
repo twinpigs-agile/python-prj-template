@@ -18,5 +18,5 @@ jobs:
       - run: sudo apt-get install -y gettext
       - run: chmod +x *.sh && ./build-all.sh
         env:
-          PROGRAM_VERSION: ${{ steps.tag_version.outputs.new_tag }}
+          PROGRAM_VERSION: 'Test build'
 
