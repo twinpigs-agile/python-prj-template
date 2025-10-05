@@ -20,7 +20,7 @@ jobs:
       uses: mathieudutour/github-tag-action@v6.2
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-    - run: bash ./build-all.sh
+    - run: chmod +x *.sh && ./build-all.sh
       env:
         PROGRAM_VERSION: ${{ steps.tag_version.outputs.new_tag }}
     - name: Upload Linux Release Assets
@@ -45,7 +45,7 @@ jobs:
       with:
         python-version: '3.13'
         cache: pip
-    - run: bash ./build-all.sh
+    - run: chmod +x *.sh && ./build-all.sh
       shell: bash
       env:
         PROGRAM_VERSION: ${{ needs.build_linux.outputs.version }}
