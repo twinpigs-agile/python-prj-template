@@ -12,4 +12,4 @@ When you begin an own Python project, it is very important to start with a good 
  - GitHub Action with support for checking commits and pull requests (Linux)
  - GitHub Action doing version increments and releases for Windows and Linux (currently it includes only the executables; customise this when building an own project).
 
-NS: It uses Bash scripts even on Windows, so use Git Bash.
+NB: It uses Bash scripts even on Windows, so use Git Bash.
