@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PRJ_NAME = "python-prj-template"  # Change
+PRJ_NAME="python-prj-template"  # Change
 
 check_res_and_popd_on_exit () {
   if [[ $? -ne 0 ]]; then
@@ -11,39 +11,43 @@ check_res_and_popd_on_exit () {
 }
 
 create_venv () {
+  VENV_PATH=`pwd`/venv
   echo "Creating venv"
-  pushd `pwd`
-  python -m venv `pwd`/venv
+  pushd src
+  python -m venv ${VENV_PATH}
   check_res_and_popd_on_exit
+  popd
 }
 
 set_version () {
   if [ "${PROGRAM_VERSION}" != "" ]; then
-    echo "VERSION = \"${PROGRAM_VERSION}\"" >| puml_compiler/src/version.txt
+    echo "\nVERSION = \"${PROGRAM_VERSION}\"" >src/current_version.py
     cat puml_compiler/src/version.txt
   fi
 }
 
 activate_venv () {
+  pushd src
   if [ "$OSTYPE" == "linux-gnu" ]; then
     echo "Linux venv activation"
-    source venv/bin/activate
-    PYSCRIPTS=`pwd`/venv/bin
+    source ../venv/bin/activate
+    PYSCRIPTS=`pwd`/../venv/bin
   else
     echo "Windows venv activation"
 
     # Check if activator.py is missing in Scripts
-    if [ ! -f venv/Scripts/activator.py ]; then
+    if [ ! -f ../venv/Scripts/activator.py ]; then
       # Try to copy from Scripts/nt if it exists
-      if [ -f venv/Scripts/nt/activator.py ]; then
-        cp venv/Scripts/nt/activator.py venv/Scripts/
+      if [ -f ../venv/Scripts/nt/activator.py ]; then
+        cp ../venv/Scripts/nt/activator.py ../venv/Scripts/
       else
         # Fallback: copy your custom activator
-        cp utils/activator.py venv/Scripts/activator.py
+        cp ../utils/activator.py ../venv/Scripts/activator.py
       fi
     fi
 
-    venv/Scripts/python venv/Scripts/activator.py
+    ../venv/Scripts/python ../venv/Scripts/activator.py
+    popd
     PYSCRIPTS=`pwd`/venv/Scripts
   fi
 }
@@ -102,7 +106,7 @@ run_tests () {
 run_mypy () {
   echo "Running Mypy"
   pushd src
-  ${PYSCRIPTS}/mypy .
+  ${PYSCRIPTS}/mypy --config-file mypy.ini .
   check_res_and_popd_on_exit
   popd
 }
@@ -133,7 +137,7 @@ pyinstaller_build () {
   pushd src
   rm -rf ../out/distr/${PRJ_NAME}
   rm -rf ../out/temp
-  ${PYSCRIPTS}/pyinstaller -F --add-data ./templates/template.xml${S}templates --add-data ./locales/en_US/LC_MESSAGES/messages.mo${S}locales/en_US/LC_MESSAGES --add-data ./locales/ru_RU/LC_MESSAGES/messages.mo${S}locales/ru_RU/LC_MESSAGES --noconfirm --distpath ../out/distr/${PRJ_NAME} -p . --workpath ../out/temp --clean ./main.py
+  ${PYSCRIPTS}/pyinstaller -F --paths . --add-data ./templates/template.xml${S}templates --add-data ./locales/en_US/LC_MESSAGES/messages.mo${S}locales/en_US/LC_MESSAGES --add-data ./locales/ru_RU/LC_MESSAGES/messages.mo${S}locales/ru_RU/LC_MESSAGES --noconfirm --distpath ../out/distr/${PRJ_NAME} -p . --workpath ../out/temp --clean ./main.py
   check_res_and_popd_on_exit
   popd
 }

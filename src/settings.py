@@ -5,6 +5,7 @@ If you initialise the locale somewhere else, still do it before the first
 import of settings and use something like:
 setattr(sys.modules["__main__"], "LANGUAGE", "en_US")
 """
+
 import os.path
 import gettext
 import sys
