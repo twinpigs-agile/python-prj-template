@@ -29,10 +29,7 @@ jobs:
         tag_name: ${{ steps.tag_version.outputs.new_tag }}
         name: Release ${{ steps.tag_version.outputs.new_tag }}
         body: ${{ steps.tag_version.outputs.changelog }}
-        files: 'puml_compiler/out/distr/main
-
-          puml_compiler/out/design.tar.gz
-
+        files: 'out/distr/main
           '
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -56,6 +53,6 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ needs.build_linux.outputs.version }}
-        files: puml_compiler/out/distr/main.exe
+        files: out/distr/main.exe
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
