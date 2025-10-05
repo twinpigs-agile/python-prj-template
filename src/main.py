@@ -19,8 +19,8 @@ def process_cmdline() -> int:
     parser.add_argument(
         "--lang",
         type=str,
-        default="en_US",
-        help="language code to use (default: en_US)",
+        default="en",
+        help="language code to use (default: en)",
     )
     args = parser.parse_args()
     if args.list_lang:
