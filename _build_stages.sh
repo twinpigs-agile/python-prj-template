@@ -27,30 +27,27 @@ set_version () {
 }
 
 activate_venv () {
-  pushd src
   if [ "$OSTYPE" == "linux-gnu" ]; then
     echo "Linux venv activation"
-    source ../venv/bin/activate
-    PYSCRIPTS=`pwd`/../venv/bin
+    source venv/bin/activate
+    PYSCRIPTS=`pwd`/venv/bin
   else
     echo "Windows venv activation"
 
     # Check if activator.py is missing in Scripts
-    if [ ! -f ../venv/Scripts/activator.py ]; then
+    if [ ! -f venv/Scripts/activator.py ]; then
       # Try to copy from Scripts/nt if it exists
-      if [ -f ../venv/Scripts/nt/activator.py ]; then
-        cp ../venv/Scripts/nt/activator.py ../venv/Scripts/
+      if [ -f venv/Scripts/nt/activator.py ]; then
+        cp venv/Scripts/nt/activator.py venv/Scripts/
       else
         # Fallback: copy your custom activator
-        cp ../utils/activator.py ../venv/Scripts/activator.py
+        cp utils/activator.py venv/Scripts/activator.py
       fi
     fi
 
-    ../venv/Scripts/python ../venv/Scripts/activator.py
-    popd
+    venv/Scripts/python venv/Scripts/activator.py
     PYSCRIPTS=`pwd`/venv/Scripts
   fi
-  popd
 }
 
 install_requirements () {
