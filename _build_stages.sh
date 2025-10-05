@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 PRJ_NAME="python-prj-template"  # Change
 
 check_res_and_popd_on_exit () {
