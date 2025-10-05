@@ -10,7 +10,7 @@ import os.path
 import gettext
 import sys
 
-SRC_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 SRC_DIR = getattr(sys, "_MEIPASS", SRC_DIR)  # PyInstaller support
 
 LOCALES_DIR = os.path.join(SRC_DIR, "locales")
