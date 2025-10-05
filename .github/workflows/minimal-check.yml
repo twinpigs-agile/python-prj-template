@@ -16,7 +16,7 @@ jobs:
           python-version: '3.13'
           cache: 'pip'
       - run: sudo apt-get install -y gettext
-      - run: source ./build-all.sh
+      - run: bash ./build-all.sh
         env:
           PROGRAM_VERSION: ${{ steps.tag_version.outputs.new_tag }}
 
