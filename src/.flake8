@@ -3,5 +3,4 @@ ignore = E203, W503
 max-line-length = 120
 exclude = .git,__pycache__,build,dis
 per-file-ignores =
-    pc/lexer/plylex_types.py: E704
-    pc/parser/plyparse_types.py: E704
+

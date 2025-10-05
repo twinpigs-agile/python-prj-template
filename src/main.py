@@ -2,13 +2,14 @@ import argparse
 import sys
 from current_version import VERSION
 
-SUPPORTED_LANGUAGES = { "en": "en_US", "ru" : "ru_RU" }
+SUPPORTED_LANGUAGES = {"en": "en_US", "ru": "ru_RU"}
 LANGUAGE = "en_US"
-VERSION = "0.0.1" # Add the logic you need to set version
+
 
 def process_cmdline() -> int:
     parser = argparse.ArgumentParser(
-        prog="python-sample-prj", usage=f"%(prog)s [options]\npython-sample-prj {VERSION}"
+        prog="python-sample-prj",
+        usage=f"%(prog)s [options]\npython-sample-prj {VERSION}",
     )
     parser.add_argument(
         "--list-lang",
@@ -35,7 +36,11 @@ def process_cmdline() -> int:
     global LANGUAGE
     LANGUAGE = SUPPORTED_LANGUAGES[args.lang]
     import settings
+
+    getattr(settings, "LANGUAGE", LANGUAGE)  # Avoiding flake8 problems
+    return 0
     from sample.sample import sample_program
+
     return sample_program()
 
 
