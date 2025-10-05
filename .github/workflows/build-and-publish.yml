@@ -2,6 +2,9 @@ name: Build and publish (Linux+Win)
 
 on: [workflow_dispatch]
 
+permissions:
+  contents: write   # to tag the new version
+
 jobs:
   build_linux:
     runs-on: ubuntu-latest
