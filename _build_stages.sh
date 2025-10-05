@@ -11,8 +11,8 @@ check_res_and_popd_on_exit () {
 }
 
 create_venv () {
-  VENV_PATH=`pwd`/venv
   echo "Creating venv"
+  VENV_PATH=`pwd`/venv
   pushd src
   python -m venv ${VENV_PATH}
   check_res_and_popd_on_exit
@@ -22,7 +22,7 @@ create_venv () {
 set_version () {
   if [ "${PROGRAM_VERSION}" != "" ]; then
     echo "\nVERSION = \"${PROGRAM_VERSION}\"" >src/current_version.py
-    cat puml_compiler/src/version.txt
+    cat src/current_version.py
   fi
 }
 
@@ -50,6 +50,7 @@ activate_venv () {
     popd
     PYSCRIPTS=`pwd`/venv/Scripts
   fi
+  popd
 }
 
 install_requirements () {
@@ -57,6 +58,7 @@ install_requirements () {
   echo "Installing requirements"
   ${PYSCRIPTS}/pip install -r requirements.txt
   check_res_and_popd_on_exit
+  popd
 }
 
 prepare_gettext() {
