@@ -6,6 +6,7 @@ check_res_and_popd_on_exit () {
   if [[ $? -ne 0 ]]; then
     echo "Something has utterly failed!"
     popd
+    echo "TERMINATING"
     exit $?
   fi
 }
@@ -83,7 +84,6 @@ prepare_gettext() {
 
 build_msgs () {
   echo "Building message files"
-  check_res_and_popd_on_exit
   pushd src
   xgettext -n -o locales/messages.pot main.py sample/sample.py && \
   msgmerge -N -U --backup=t locales/en_US/LC_MESSAGES/messages.po locales/messages.pot >locales/tmp_messages.pot && \
