@@ -7,7 +7,7 @@ check_res_and_popd_on_exit () {
     echo "Something has utterly failed!"
     popd
     echo "TERMINATING"
-    exit $?
+    exit 2
   fi
 }
 
