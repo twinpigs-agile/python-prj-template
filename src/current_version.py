@@ -1,1 +1,1 @@
-sdfsadVERSION = ""
+VERSION = "Private build"
