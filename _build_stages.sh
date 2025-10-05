@@ -22,7 +22,7 @@ create_venv () {
 
 set_version () {
   if [ "${PROGRAM_VERSION}" != "" ]; then
-    echo "\nVERSION = \"${PROGRAM_VERSION}\"" >src/current_version.py
+    echo "VERSION = \"${PROGRAM_VERSION}\"" >src/current_version.py
     cat src/current_version.py
   fi
 }
