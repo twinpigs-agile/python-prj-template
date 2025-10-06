@@ -15,7 +15,7 @@ create_venv () {
   echo "Creating venv"
   VENV_PATH=`pwd`/venv
   pushd src
-  python -m venv ${VENV_PATH}
+  python -m venv "${VENV_PATH}"
   check_res_and_popd_on_exit
   popd
 }
@@ -47,14 +47,14 @@ activate_venv () {
     fi
 
     venv/Scripts/python venv/Scripts/activator.py
-    PYSCRIPTS=`pwd`/venv/Scripts
+    PYSCRIPTS="`pwd`/venv/Scripts"
   fi
 }
 
 install_requirements () {
   pushd .
   echo "Installing requirements"
-  ${PYSCRIPTS}/pip install -r requirements.txt
+  "${PYSCRIPTS}/pip" install -r requirements.txt
   check_res_and_popd_on_exit
   popd
 }
@@ -97,7 +97,7 @@ build_msgs () {
 run_tests () {
   echo "Running tests"
   pushd src/tests
-  ${PYSCRIPTS}/python run_tests.py
+  "${PYSCRIPTS}/python" run_tests.py
   check_res_and_popd_on_exit
   popd
 }
@@ -105,7 +105,7 @@ run_tests () {
 run_mypy () {
   echo "Running Mypy"
   pushd src
-  ${PYSCRIPTS}/mypy --config-file mypy.ini .
+  "${PYSCRIPTS}/mypy" --config-file mypy.ini .
   check_res_and_popd_on_exit
   popd
 }
@@ -113,7 +113,7 @@ run_mypy () {
 run_black() {
   echo "Reformatting the code with black"
   pushd src
-  ${PYSCRIPTS}/black .
+  "${PYSCRIPTS}/black" .
   check_res_and_popd_on_exit
   popd
 }
@@ -121,7 +121,7 @@ run_black() {
 run_linter() {
   echo "Linting with flake8"
   pushd src
-  ${PYSCRIPTS}/flake8 .
+  "${PYSCRIPTS}/flake8" .
   check_res_and_popd_on_exit
   popd
 }
@@ -136,7 +136,7 @@ pyinstaller_build () {
   pushd src
   rm -rf ../out/distr/${PRJ_NAME}
   rm -rf ../out/temp
-  ${PYSCRIPTS}/pyinstaller -F --paths . --add-data ./templates/template.xml${S}templates --add-data ./locales/en_US/LC_MESSAGES/messages.mo${S}locales/en_US/LC_MESSAGES --add-data ./locales/ru_RU/LC_MESSAGES/messages.mo${S}locales/ru_RU/LC_MESSAGES --noconfirm --distpath ../out/distr/${PRJ_NAME} -p . --workpath ../out/temp --clean ./main.py
+  "${PYSCRIPTS}/pyinstaller" -F --paths . --add-data ./templates/template.xml${S}templates --add-data ./locales/en_US/LC_MESSAGES/messages.mo${S}locales/en_US/LC_MESSAGES --add-data ./locales/ru_RU/LC_MESSAGES/messages.mo${S}locales/ru_RU/LC_MESSAGES --noconfirm --distpath "../out/distr/${PRJ_NAME}" -p . --workpath ../out/temp --clean ./main.py
   check_res_and_popd_on_exit
   popd
 }
