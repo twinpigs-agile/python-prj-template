@@ -55,6 +55,7 @@ cover/
 # Translations
 *.mo
 *.pot
+*.po.~*
 
 # Django stuff:
 *.log
@@ -206,7 +207,4 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
-
-
-#*.po.~*
 
