@@ -86,11 +86,17 @@ prepare_gettext() {
 build_msgs () {
   echo "Building message files"
   pushd src
-  find . -path './tests' -prune -o -name '*.py' -print0 | xargs -0 xgettext -n -o locales/messages.pot && \
-  msgmerge -N -U --backup=t locales/en_US/LC_MESSAGES/messages.po locales/messages.pot && \
-  msgfmt -o locales/en_US/LC_MESSAGES/messages.mo locales/en_US/LC_MESSAGES/messages.po && \
-  msgmerge -N -U --backup=t locales/ru_RU/LC_MESSAGES/messages.po locales/messages.pot && \
-  msgfmt -o locales/ru_RU/LC_MESSAGES/messages.mo locales/ru_RU/LC_MESSAGES/messages.po
+  find . -path './tests' -prune -o -name '*.py' -print0 | xargs -0 xgettext -n -o locales/messages.pot
+  find locales -type f -name 'messages.po' | while read -r po_file; do
+    # Получаем путь к .mo-файлу
+    mo_file="${po_file%.po}.mo"
+
+    # Обновляем .po из .pot
+    msgmerge -N -U --backup=t "$po_file" locales/messages.pot
+
+    # Компилируем .mo
+    msgfmt -o "$mo_file" "$po_file"
+  done
   check_res_and_popd_on_exit
   popd
 }
