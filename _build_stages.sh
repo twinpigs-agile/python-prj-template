@@ -149,14 +149,16 @@ pyinstaller_build () {
   DIST="../out/distr/${PRJ_NAME}"
   WORK="../out/temp"
   ADD_DATA=()
+
   while IFS= read -r -d '' f; do
-    rel_path="${f#./}"
-    ADD_DATA+=(--add-data "$f${S}${rel_path}")
+    rel_dir="$(dirname "${f#./}")"
+    ADD_DATA+=("--add-data" "$f${S}$rel_dir")
   done < <(find ./templates -type f -print0)
 
   while IFS= read -r -d '' f; do
-    rel_path="${f#./}"
-    ADD_DATA+=(--add-data "$f${S}${rel_path}")
+
+    rel_dir="$(dirname "${f#./}")"
+    ADD_DATA+=("--add-data" "$f${S}$rel_dir")
   done < <(find ./locales -type f -name '*.mo' -print0)
 
   echo "${PYSCRIPTS}/pyinstaller" -F --paths . \
