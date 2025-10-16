@@ -1,6 +1,7 @@
 #!/bin/bash
 
 PRJ_NAME="python-prj-template"  # Change
+MAIN_FILE="main.py"
 
 check_res_and_popd_on_exit () {
   if [[ $? -ne 0 ]]; then
@@ -85,10 +86,10 @@ prepare_gettext() {
 build_msgs () {
   echo "Building message files"
   pushd src
-  xgettext -n -o locales/messages.pot main.py sample/sample.py && \
-  msgmerge -N -U --backup=t locales/en_US/LC_MESSAGES/messages.po locales/messages.pot >locales/tmp_messages.pot && \
+  find . -path './tests' -prune -o -name '*.py' -print0 | xargs -0 xgettext -n -o locales/messages.pot && \
+  msgmerge -N -U --backup=t locales/en_US/LC_MESSAGES/messages.po locales/messages.pot && \
   msgfmt -o locales/en_US/LC_MESSAGES/messages.mo locales/en_US/LC_MESSAGES/messages.po && \
-  msgmerge -N -U --backup=t locales/ru_RU/LC_MESSAGES/messages.po locales/messages.pot >locales/tmp_messages.pot && \
+  msgmerge -N -U --backup=t locales/ru_RU/LC_MESSAGES/messages.po locales/messages.pot && \
   msgfmt -o locales/ru_RU/LC_MESSAGES/messages.mo locales/ru_RU/LC_MESSAGES/messages.po
   check_res_and_popd_on_exit
   popd
@@ -136,7 +137,37 @@ pyinstaller_build () {
   pushd src
   rm -rf ../out/distr/${PRJ_NAME}
   rm -rf ../out/temp
-  "${PYSCRIPTS}/pyinstaller" -F --paths . --add-data ./templates/template.xml${S}templates --add-data ./locales/en_US/LC_MESSAGES/messages.mo${S}locales/en_US/LC_MESSAGES --add-data ./locales/ru_RU/LC_MESSAGES/messages.mo${S}locales/ru_RU/LC_MESSAGES --noconfirm --distpath "../out/distr/${PRJ_NAME}" -p . --workpath ../out/temp --clean ./main.py
+
+  S=":"
+  [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]] && S=";"
+  DIST="../out/distr/${PRJ_NAME}"
+  WORK="../out/temp"
+  ADD_DATA=()
+  while IFS= read -r -d '' f; do
+    rel_path="${f#./}"
+    ADD_DATA+=(--add-data "$f${S}${rel_path}")
+  done < <(find ./templates -type f -print0)
+
+  while IFS= read -r -d '' f; do
+    rel_path="${f#./}"
+    ADD_DATA+=(--add-data "$f${S}${rel_path}")
+  done < <(find ./locales -type f -name '*.mo' -print0)
+
+  echo "${PYSCRIPTS}/pyinstaller" -F --paths . \
+    "${ADD_DATA[@]}" \
+    --noconfirm \
+    --distpath "$DIST" \
+    -p . \
+    --workpath "$WORK" \
+    --clean "$MAIN_FILE"
+
+  "${PYSCRIPTS}/pyinstaller" -F --paths . \
+    "${ADD_DATA[@]}" \
+    --noconfirm \
+    --distpath "$DIST" \
+    -p . \
+    --workpath "$WORK" \
+    --clean "$MAIN_FILE"
   check_res_and_popd_on_exit
   popd
 }
